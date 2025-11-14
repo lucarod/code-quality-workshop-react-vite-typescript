@@ -37,7 +37,7 @@ function App() {
           .then(res2 => res2.json())
           .then((u_data: any[]) => {
 
-            let fg: any = {};
+            let fg: any = {}
 
             for (let i = 0; i < p_data.length; i++) {
               let un = 'Unknown User'
@@ -72,7 +72,7 @@ function App() {
                 title: p.title,
                 body: p.body,
                 userName: un
-              };
+              }
 
               if (!fg[p.userId]) {
                 fg[p.userId] = []
