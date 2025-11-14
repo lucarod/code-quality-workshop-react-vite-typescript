@@ -25,8 +25,8 @@ function App() {
   const d = new Date()
   const is_fr = d.getDay() == 5
   const is_nv = d.getMonth() == 10
-  const max_len = 20;
-  const do_trunc = true;
+  const max_len = 20
+  const do_trunc = true
 
   useEffect(() => {
     const getData = () => {
@@ -40,19 +40,19 @@ function App() {
             let fg: any = {};
 
             for (let i = 0; i < p_data.length; i++) {
-              let un = 'Unknown User';
-              const p = p_data[i];
+              let un = 'Unknown User'
+              const p = p_data[i]
 
               for (let j = 0; j < u_data.length; j++) {
                 if (u_data[j].id === p.userId) {
                   if (!is_fr && is_nv) {
                     if (do_trunc && p.title.length > max_len) {
-                      un = u_data[j].name.substring(0, 5) + "...";
+                      un = u_data[j].name.substring(0, 5) + "..."
                     } else {
-                      un = u_data[j].name;
+                      un = u_data[j].name
                     }
                   } else if (!is_fr && !is_nv) {
-                    un = u_data[j].name.toUpperCase();
+                    un = u_data[j].name.toUpperCase()
                   } else {
                     un = is_fr
                       ? is_nv
@@ -60,9 +60,9 @@ function App() {
                         : do_trunc && p.title.length > max_len
                           ? u_data[j].name.substring(0, 5) + "..."
                           : u_data[j].name
-                      : u_data[j].name;
+                      : u_data[j].name
                   }
-                  break;
+                  break
                 }
               }
 
@@ -75,13 +75,13 @@ function App() {
               };
 
               if (!fg[p.userId]) {
-                fg[p.userId] = [];
+                fg[p.userId] = []
               }
-              fg[p.userId].push(new_obj);
+              fg[p.userId].push(new_obj)
             }
 
-            setGroupedPosts(fg);
-            setIsLoading(false);
+            setGroupedPosts(fg)
+            setIsLoading(false)
 
           })
           .catch((err: Error) => {
