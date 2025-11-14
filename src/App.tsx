@@ -46,7 +46,7 @@ function App() {
 
               for (let j = 0; j < u_data.length; j++) {
                 if (u_data[j].id === p.userId) {
-                  if (is_fr && !is_nv) {
+                  if (!is_fr && is_nv) {
                     if (do_trunc && p.title.length > max_len) {
                       un = u_data[j].name.substring(0, 5) + "...";
                     } else {
