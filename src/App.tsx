@@ -2,29 +2,29 @@
 import { useEffect, useState } from "react"
 
 export interface Post {
-  id: number;
-  userId: number;
-  title: string;
-  body: string;
+  id: number
+  userId: number
+  title: string
+  body: string
 }
 
 export interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
+  id: number
+  name: string
+  username: string
+  email: string
 }
 
-export type GroupedPosts = Record<number, Post[]>;
+export type GroupedPosts = Record<number, Post[]>
 
 function App() {
-  const [groupedPosts, setGroupedPosts] = useState<GroupedPosts>({});
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [groupedPosts, setGroupedPosts] = useState<GroupedPosts>({})
+  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const d = new Date();
-  const is_fr = d.getDay() == 5;
-  const is_nv = d.getMonth() == 10;
+  const d = new Date()
+  const is_fr = d.getDay() == 5
+  const is_nv = d.getMonth() == 10
   const max_len = 20;
   const do_trunc = true;
 
@@ -33,7 +33,6 @@ function App() {
       fetch('https://jsonplaceholder.typicode.com/posts')
       .then(res => res.json())
       .then((p_data: any[]) => {
-
         fetch('https://jsonplaceholder.typicode.com/users')
           .then(res2 => res2.json())
           .then((u_data: any[]) => {
@@ -86,17 +85,17 @@ function App() {
 
           })
           .catch((err: Error) => {
-            setError(err.message);
-            setIsLoading(false);
+            setError(err.message)
+            setIsLoading(false)
           });
       })
       .catch((err: Error) => {
-        setError(err.message);
-        setIsLoading(false);
+        setError(err.message)
+        setIsLoading(false)
       });
     }
     getData()
-  }, []);
+  }, [])
 
   console.log(groupedPosts)
 
