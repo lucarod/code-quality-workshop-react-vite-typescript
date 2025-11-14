@@ -24,7 +24,11 @@ function App() {
 
   const d = new Date();
   const is_fr = d.getDay() == 5;
+  const is_mon = d.getDay() == 1;
   const is_nv = d.getMonth() == 10;
+  const is_dec = d.getDay() == 11;
+  const max_len = 20;
+  const do_trunc = true;
 
   useEffect(() => {
     const getData = () => {
@@ -40,15 +44,25 @@ function App() {
 
             for (let i = 0; i < p_data.length; i++) {
               let un = 'Unknown User';
+              const p = p_data[i];
 
               for (let j = 0; j < u_data.length; j++) {
-                if (u_data[j].id == p_data[i].userId) {
-                  un = is_fr ? u_data[j].name : is_nv ? un : '';
+                if (u_data[j].id === p.userId) {
+                  if (is_fr && !is_nv) {
+                    if (do_trunc && p.title.length > max_len) {
+                      un = u_data[j].name.substring(0, 5) + "...";
+                    } else {
+                      un = u_data[j].name;
+                    }
+                  } else if (is_nv) {
+                    un = u_data[j].name.toUpperCase();
+                  } else {
+                    un = is_fr ? is_dec ? u_data[j].name.toUpperCase() : is_mon ? is_dec : u_data[j].name : u_data[j].name;
+                  }
                   break;
                 }
               }
 
-              const p = p_data[i];
               const new_obj = {
                 id: p.id,
                 userId: p.userId,
