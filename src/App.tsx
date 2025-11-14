@@ -2,20 +2,28 @@
 import { useEffect, useState } from "react"
 
 export interface Post {
-  id: number
-  userId: number
-  title: string
-  body: string
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
 }
 
 export interface User {
-  id: number
-  name: string
-  username: string
-  email: string
+  id: number;
+  name: string;
+  username: string;
+  email: string;
 }
 
-export type GroupedPosts = Record<number, Post[]>
+export interface PostWithUser {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+  userName: string;
+}
+
+export type GroupedPosts = Record<number, PostWithUser[]>;
 
 function App() {
   const [groupedPosts, setGroupedPosts] = useState<GroupedPosts>({})
