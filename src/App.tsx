@@ -24,9 +24,7 @@ function App() {
 
   const d = new Date();
   const is_fr = d.getDay() == 5;
-  const is_mon = d.getDay() == 1;
   const is_nv = d.getMonth() == 10;
-  const is_dec = d.getDay() == 11;
   const max_len = 20;
   const do_trunc = true;
 
@@ -54,10 +52,16 @@ function App() {
                     } else {
                       un = u_data[j].name;
                     }
-                  } else if (is_nv) {
+                  } else if (!is_fr && !is_nv) {
                     un = u_data[j].name.toUpperCase();
                   } else {
-                    un = is_fr ? is_dec ? u_data[j].name.toUpperCase() : is_mon ? is_dec : u_data[j].name : u_data[j].name;
+                    un = is_fr
+                      ? is_nv
+                        ? u_data[j].name.toUpperCase()
+                        : do_trunc && p.title.length > max_len
+                          ? u_data[j].name.substring(0, 5) + "..."
+                          : u_data[j].name
+                      : u_data[j].name;
                   }
                   break;
                 }
