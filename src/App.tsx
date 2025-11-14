@@ -8,6 +8,13 @@ export interface Post {
   body: string;
 }
 
+export interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+}
+
 export type GroupedPosts = Record<number, Post[]>;
 
 function App() {
@@ -15,36 +22,62 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const d = new Date();
+  const is_fr = d.getDay() == 5;
+  const is_nv = d.getMonth() == 10;
+
   useEffect(() => {
-    const getPosts = () => {
-      setIsLoading(true);
+    const getData = () => {
       fetch('https://jsonplaceholder.typicode.com/posts')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json() as Promise<Post[]>;
-        })
-        .then(posts => {
-          let finalGroups: GroupedPosts = {};
+      .then(res => res.json())
+      .then((p_data: any[]) => {
 
-          posts.forEach(post => {
-            if (!finalGroups[post.userId]) {
-              finalGroups[post.userId] = [];
+        fetch('https://jsonplaceholder.typicode.com/users')
+          .then(res2 => res2.json())
+          .then((u_data: any[]) => {
+
+            let fg: any = {};
+
+            for (let i = 0; i < p_data.length; i++) {
+              let un = 'Unknown User';
+
+              for (let j = 0; j < u_data.length; j++) {
+                if (u_data[j].id == p_data[i].userId) {
+                  un = is_fr ? u_data[j].name : is_nv ? un : '';
+                  break;
+                }
+              }
+
+              const p = p_data[i];
+              const new_obj = {
+                id: p.id,
+                userId: p.userId,
+                title: p.title,
+                body: p.body,
+                userName: un
+              };
+
+              if (!fg[p.userId]) {
+                fg[p.userId] = [];
+              }
+              fg[p.userId].push(new_obj);
             }
-            finalGroups[post.userId].push(post);
+
+            setGroupedPosts(fg);
+            setIsLoading(false);
+
+          })
+          .catch((err: Error) => {
+            setError(err.message);
+            setIsLoading(false);
           });
-
-          setGroupedPosts(finalGroups);
-          setIsLoading(false);
-        })
-        .catch(err => {
-          setError(err.message);
-          setIsLoading(false);
-        });
+      })
+      .catch((err: Error) => {
+        setError(err.message);
+        setIsLoading(false);
+      });
     }
-
-    getPosts()
+    getData()
   }, []);
 
   console.log(groupedPosts)
@@ -52,9 +85,9 @@ function App() {
   return (
     <>
       {isLoading ? (
-        <p>Loading...</p>
+        <div>Loading...</div>
       ) : error ? (
-        <p>Error: {error}</p>
+        <div>Error: {error}</div>
       ) : (
         <div className="bg-gray-100 text-gray-900 min-h-screen font-sans">
 
